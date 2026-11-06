@@ -1,0 +1,22 @@
+:root {
+    --primary-dark: #2c3e50; --secondary-dark: #34495e; --accent-orange: #f39c12;
+    --text-light: #bdc3c7; --bg-gray: #f4f7f6; --head-gold: #f1c40f;
+}
+
+body { display: flex; margin: 0; background: var(--bg-gray); font-family: 'Segoe UI', sans-serif; }
+
+/* SIDEBAR FIXED POSITION */
+.sidebar { 
+    width: 260px; background: var(--primary-dark); color: white; 
+    min-height: 100vh; position: fixed; padding: 20px; box-sizing: border-box; 
+}
+.sidebar a { color: var(--text-light); display: block; padding: 12px; text-decoration: none; border-radius: 5px; margin-bottom: 5px; font-size: 14px; }
+.sidebar a.active { background: var(--accent-orange); color: white; }
+.sidebar .menu-label { font-size: 11px; text-transform: uppercase; color: #7f8c8d; margin: 20px 0 10px 10px; font-weight: bold; }
+
+/* MAIN CONTENT AREA */
+.main-content { 
+    flex: 1; margin-left: 260px; /* Importante: para hindi matakpan ng sidebar */
+    padding: 40px; box-sizing: border-box; min-height: 100vh; 
+}
+.card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
