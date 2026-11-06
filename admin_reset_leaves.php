@@ -8,7 +8,7 @@ if(!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'HR') {
 
 if(isset($_POST['confirm_reset'])) {
 
-    // AUDIT: kunin ang kalagayan BAGO ang reset
+    // AUDIT: kunin ang kalagayan BAGO ang reset (hindi na ito maibabalik pagkatapos ng UPDATE)
     $before = $conn->query("SELECT COUNT(*) AS total_users, COALESCE(SUM(annual_leave),0) AS sum_al, COALESCE(SUM(mandatory_leave),0) AS sum_ml FROM users")->fetch_assoc();
 
     $sql = "UPDATE users SET annual_leave = 25.0, mandatory_leave = 5.0";
@@ -16,15 +16,10 @@ if(isset($_POST['confirm_reset'])) {
     if($conn->query($sql)) {
         $changed = $conn->affected_rows; 
         $n = (int)$before['total_users'];
-        
-        // Naayos ang mga operator dito para sa total after reset calculation
-        $total_al_after = 25.0 * $n;
-        $total_ml_after = 5.0 * $n;
-
         audit_log($conn, 'RESET_ALL_LEAVE_CREDITS', 'LEAVE_BALANCE', 'ALL',
             "Reset to AL 25.0 / ML 5.0 | Users in table: $n | Rows actually changed: $changed"
-            . " | Total AL before: " . $before['sum_al'] . " -> after: " . $total_al_after
-            . " | Total ML before: " . $before['sum_ml'] . " -> after: " . $total_ml_after);
+            . " | Total AL before: " . $before['sum_al'] . " -> after: " . (25 * $n)
+            . " | Total ML before: " . $before['sum_ml'] . " -> after: " . (5 * $n));
 
         echo "<script>alert('All leave credits have been reset to 25 and 5!'); window.location='admin_dashboard.php';</script>";
     } else {
